@@ -17,6 +17,7 @@ namespace CalculonDb
 {
   public class ReportNodeService {
     public interface Iface {
+      void aggregate(CalculonDb.Entry entry);
     }
 
     public class Client : Iface {
@@ -44,11 +45,42 @@ namespace CalculonDb
       }
 
 
+      public void aggregate(CalculonDb.Entry entry)
+      {
+        send_aggregate(entry);
+        recv_aggregate();
+      }
+
+      public void send_aggregate(CalculonDb.Entry entry)
+      {
+        oprot_.WriteMessageBegin(new TMessage("aggregate", TMessageType.Call, seqid_));
+        aggregate_args args = new aggregate_args();
+        args.Entry = entry;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public void recv_aggregate()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        aggregate_result result = new aggregate_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        return;
+      }
+
     }
     public class Processor : TProcessor {
       public Processor(Iface iface)
       {
         iface_ = iface;
+        processMap_["aggregate"] = aggregate_Process;
       }
 
       protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);
@@ -79,6 +111,148 @@ namespace CalculonDb
           return false;
         }
         return true;
+      }
+
+      public void aggregate_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        aggregate_args args = new aggregate_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        aggregate_result result = new aggregate_result();
+        iface_.aggregate(args.Entry);
+        oprot.WriteMessageBegin(new TMessage("aggregate", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+    }
+
+
+    [Serializable]
+    public partial class aggregate_args : TBase
+    {
+      private CalculonDb.Entry _entry;
+
+      public CalculonDb.Entry Entry
+      {
+        get
+        {
+          return _entry;
+        }
+        set
+        {
+          __isset.entry = true;
+          this._entry = value;
+        }
+      }
+
+
+      public Isset __isset;
+      [Serializable]
+      public struct Isset {
+        public bool entry;
+      }
+
+      public aggregate_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Entry = new CalculonDb.Entry();
+                Entry.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("aggregate_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Entry != null && __isset.entry) {
+          field.Name = "entry";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Entry.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("aggregate_args(");
+        sb.Append("Entry: ");
+        sb.Append(Entry== null ? "<null>" : Entry.ToString());
+        sb.Append(")");
+        return sb.ToString();
+      }
+
+    }
+
+
+    [Serializable]
+    public partial class aggregate_result : TBase
+    {
+
+      public aggregate_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("aggregate_result");
+        oprot.WriteStructBegin(struc);
+
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("aggregate_result(");
+        sb.Append(")");
+        return sb.ToString();
       }
 
     }

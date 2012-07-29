@@ -14,6 +14,17 @@ struct Entry {
 
 
 
+
+/**
+ * A report
+ */
+struct Report {
+	1: string name
+}
+
+
+
+
 /**
  * Result object returned by
  * interface node methods
@@ -21,4 +32,5 @@ struct Entry {
 struct Result {
 	1: i32 statusCode
 	2: i32 statusMessage
+	3: list<Report> reports
 }

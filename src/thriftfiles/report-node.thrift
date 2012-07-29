@@ -8,7 +8,11 @@ namespace csharp CalculonDb
 /**
  * The service implemented by the Report nodes
  */
-service ReportNodeService
-{
-	
+service ReportNodeService {
+
+	/**
+	 * Tell the report node to aggregate
+	 * reports with the given Entry
+	 */
+	void aggregate(1: shared.Entry entry)
 }
