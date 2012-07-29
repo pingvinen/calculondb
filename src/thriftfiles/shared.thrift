@@ -31,6 +31,6 @@ struct ThriftReport {
  */
 struct Result {
 	1: i32 statusCode
-	2: i32 statusMessage
+	2: string statusMessage
 	3: list<ThriftReport> reports
 }

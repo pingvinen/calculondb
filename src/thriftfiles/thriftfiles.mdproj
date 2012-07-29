@@ -9,7 +9,7 @@
     <ProjectGuid>{BEDAB6E4-03B2-4BE0-B105-92AAB683C65E}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
-    <OutputPath>.\</OutputPath>
+    <OutputPath>.</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <None Include="interface-node.thrift" />

@@ -19,11 +19,11 @@ service InterfaceNodeService {
 	 * Get the state of the report with the
 	 * given report name
 	 */
-	shared.Result get(1: string reportName)
+	shared.Result getReport(1: string reportName)
 	
 	/**
 	 * Get the state of all the reports 
 	 * belonging to the given set
 	 */
-	shared.Result getList(1: string setName)
+	shared.Result getSet(1: string setName)
 }

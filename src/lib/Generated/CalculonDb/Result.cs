@@ -20,7 +20,7 @@ namespace CalculonDb
   public partial class Result : TBase
   {
     private int _statusCode;
-    private int _statusMessage;
+    private string _statusMessage;
     private List<ThriftReport> _reports;
 
     public int StatusCode
@@ -36,7 +36,7 @@ namespace CalculonDb
       }
     }
 
-    public int StatusMessage
+    public string StatusMessage
     {
       get
       {
@@ -94,8 +94,8 @@ namespace CalculonDb
             }
             break;
           case 2:
-            if (field.Type == TType.I32) {
-              StatusMessage = iprot.ReadI32();
+            if (field.Type == TType.String) {
+              StatusMessage = iprot.ReadString();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -139,12 +139,12 @@ namespace CalculonDb
         oprot.WriteI32(StatusCode);
         oprot.WriteFieldEnd();
       }
-      if (__isset.statusMessage) {
+      if (StatusMessage != null && __isset.statusMessage) {
         field.Name = "statusMessage";
-        field.Type = TType.I32;
+        field.Type = TType.String;
         field.ID = 2;
         oprot.WriteFieldBegin(field);
-        oprot.WriteI32(StatusMessage);
+        oprot.WriteString(StatusMessage);
         oprot.WriteFieldEnd();
       }
       if (Reports != null && __isset.reports) {

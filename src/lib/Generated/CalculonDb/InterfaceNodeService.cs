@@ -18,8 +18,8 @@ namespace CalculonDb
   public class InterfaceNodeService {
     public interface Iface {
       CalculonDb.Result insert(CalculonDb.Entry entry);
-      CalculonDb.Result get(string reportName);
-      CalculonDb.Result getList(string setName);
+      CalculonDb.Result getReport(string reportName);
+      CalculonDb.Result getSet(string setName);
     }
 
     public class Client : Iface {
@@ -80,23 +80,23 @@ namespace CalculonDb
         throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "insert failed: unknown result");
       }
 
-      public CalculonDb.Result get(string reportName)
+      public CalculonDb.Result getReport(string reportName)
       {
-        send_get(reportName);
-        return recv_get();
+        send_getReport(reportName);
+        return recv_getReport();
       }
 
-      public void send_get(string reportName)
+      public void send_getReport(string reportName)
       {
-        oprot_.WriteMessageBegin(new TMessage("get", TMessageType.Call, seqid_));
-        get_args args = new get_args();
+        oprot_.WriteMessageBegin(new TMessage("getReport", TMessageType.Call, seqid_));
+        getReport_args args = new getReport_args();
         args.ReportName = reportName;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public CalculonDb.Result recv_get()
+      public CalculonDb.Result recv_getReport()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -104,32 +104,32 @@ namespace CalculonDb
           iprot_.ReadMessageEnd();
           throw x;
         }
-        get_result result = new get_result();
+        getReport_result result = new getReport_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
           return result.Success;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "get failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getReport failed: unknown result");
       }
 
-      public CalculonDb.Result getList(string setName)
+      public CalculonDb.Result getSet(string setName)
       {
-        send_getList(setName);
-        return recv_getList();
+        send_getSet(setName);
+        return recv_getSet();
       }
 
-      public void send_getList(string setName)
+      public void send_getSet(string setName)
       {
-        oprot_.WriteMessageBegin(new TMessage("getList", TMessageType.Call, seqid_));
-        getList_args args = new getList_args();
+        oprot_.WriteMessageBegin(new TMessage("getSet", TMessageType.Call, seqid_));
+        getSet_args args = new getSet_args();
         args.SetName = setName;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public CalculonDb.Result recv_getList()
+      public CalculonDb.Result recv_getSet()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -137,13 +137,13 @@ namespace CalculonDb
           iprot_.ReadMessageEnd();
           throw x;
         }
-        getList_result result = new getList_result();
+        getSet_result result = new getSet_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
           return result.Success;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getList failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getSet failed: unknown result");
       }
 
     }
@@ -152,8 +152,8 @@ namespace CalculonDb
       {
         iface_ = iface;
         processMap_["insert"] = insert_Process;
-        processMap_["get"] = get_Process;
-        processMap_["getList"] = getList_Process;
+        processMap_["getReport"] = getReport_Process;
+        processMap_["getSet"] = getSet_Process;
       }
 
       protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);
@@ -199,27 +199,27 @@ namespace CalculonDb
         oprot.Transport.Flush();
       }
 
-      public void get_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void getReport_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        get_args args = new get_args();
+        getReport_args args = new getReport_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        get_result result = new get_result();
-        result.Success = iface_.get(args.ReportName);
-        oprot.WriteMessageBegin(new TMessage("get", TMessageType.Reply, seqid)); 
+        getReport_result result = new getReport_result();
+        result.Success = iface_.getReport(args.ReportName);
+        oprot.WriteMessageBegin(new TMessage("getReport", TMessageType.Reply, seqid)); 
         result.Write(oprot);
         oprot.WriteMessageEnd();
         oprot.Transport.Flush();
       }
 
-      public void getList_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void getSet_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        getList_args args = new getList_args();
+        getSet_args args = new getSet_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        getList_result result = new getList_result();
-        result.Success = iface_.getList(args.SetName);
-        oprot.WriteMessageBegin(new TMessage("getList", TMessageType.Reply, seqid)); 
+        getSet_result result = new getSet_result();
+        result.Success = iface_.getSet(args.SetName);
+        oprot.WriteMessageBegin(new TMessage("getSet", TMessageType.Reply, seqid)); 
         result.Write(oprot);
         oprot.WriteMessageEnd();
         oprot.Transport.Flush();
@@ -400,7 +400,7 @@ namespace CalculonDb
 
 
     [Serializable]
-    public partial class get_args : TBase
+    public partial class getReport_args : TBase
     {
       private string _reportName;
 
@@ -424,7 +424,7 @@ namespace CalculonDb
         public bool reportName;
       }
 
-      public get_args() {
+      public getReport_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -456,7 +456,7 @@ namespace CalculonDb
       }
 
       public void Write(TProtocol oprot) {
-        TStruct struc = new TStruct("get_args");
+        TStruct struc = new TStruct("getReport_args");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
         if (ReportName != null && __isset.reportName) {
@@ -472,7 +472,7 @@ namespace CalculonDb
       }
 
       public override string ToString() {
-        StringBuilder sb = new StringBuilder("get_args(");
+        StringBuilder sb = new StringBuilder("getReport_args(");
         sb.Append("ReportName: ");
         sb.Append(ReportName);
         sb.Append(")");
@@ -483,7 +483,7 @@ namespace CalculonDb
 
 
     [Serializable]
-    public partial class get_result : TBase
+    public partial class getReport_result : TBase
     {
       private CalculonDb.Result _success;
 
@@ -507,7 +507,7 @@ namespace CalculonDb
         public bool success;
       }
 
-      public get_result() {
+      public getReport_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -540,7 +540,7 @@ namespace CalculonDb
       }
 
       public void Write(TProtocol oprot) {
-        TStruct struc = new TStruct("get_result");
+        TStruct struc = new TStruct("getReport_result");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
 
@@ -559,7 +559,7 @@ namespace CalculonDb
       }
 
       public override string ToString() {
-        StringBuilder sb = new StringBuilder("get_result(");
+        StringBuilder sb = new StringBuilder("getReport_result(");
         sb.Append("Success: ");
         sb.Append(Success== null ? "<null>" : Success.ToString());
         sb.Append(")");
@@ -570,7 +570,7 @@ namespace CalculonDb
 
 
     [Serializable]
-    public partial class getList_args : TBase
+    public partial class getSet_args : TBase
     {
       private string _setName;
 
@@ -594,7 +594,7 @@ namespace CalculonDb
         public bool setName;
       }
 
-      public getList_args() {
+      public getSet_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -626,7 +626,7 @@ namespace CalculonDb
       }
 
       public void Write(TProtocol oprot) {
-        TStruct struc = new TStruct("getList_args");
+        TStruct struc = new TStruct("getSet_args");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
         if (SetName != null && __isset.setName) {
@@ -642,7 +642,7 @@ namespace CalculonDb
       }
 
       public override string ToString() {
-        StringBuilder sb = new StringBuilder("getList_args(");
+        StringBuilder sb = new StringBuilder("getSet_args(");
         sb.Append("SetName: ");
         sb.Append(SetName);
         sb.Append(")");
@@ -653,7 +653,7 @@ namespace CalculonDb
 
 
     [Serializable]
-    public partial class getList_result : TBase
+    public partial class getSet_result : TBase
     {
       private CalculonDb.Result _success;
 
@@ -677,7 +677,7 @@ namespace CalculonDb
         public bool success;
       }
 
-      public getList_result() {
+      public getSet_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -710,7 +710,7 @@ namespace CalculonDb
       }
 
       public void Write(TProtocol oprot) {
-        TStruct struc = new TStruct("getList_result");
+        TStruct struc = new TStruct("getSet_result");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
 
@@ -729,7 +729,7 @@ namespace CalculonDb
       }
 
       public override string ToString() {
-        StringBuilder sb = new StringBuilder("getList_result(");
+        StringBuilder sb = new StringBuilder("getSet_result(");
         sb.Append("Success: ");
         sb.Append(Success== null ? "<null>" : Success.ToString());
         sb.Append(")");
