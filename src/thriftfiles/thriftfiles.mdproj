@@ -14,5 +14,6 @@
   <ItemGroup>
     <None Include="interface-node.thrift" />
     <None Include="report-node.thrift" />
+    <None Include="shared.thrift" />
   </ItemGroup>
 </Project>

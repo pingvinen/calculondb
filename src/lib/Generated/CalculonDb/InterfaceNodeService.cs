@@ -17,6 +17,9 @@ namespace CalculonDb
 {
   public class InterfaceNodeService {
     public interface Iface {
+      CalculonDb.Result insert(CalculonDb.Entry entry);
+      CalculonDb.Result get(string reportName);
+      CalculonDb.Result getList(string setName);
     }
 
     public class Client : Iface {
@@ -44,11 +47,113 @@ namespace CalculonDb
       }
 
 
+      public CalculonDb.Result insert(CalculonDb.Entry entry)
+      {
+        send_insert(entry);
+        return recv_insert();
+      }
+
+      public void send_insert(CalculonDb.Entry entry)
+      {
+        oprot_.WriteMessageBegin(new TMessage("insert", TMessageType.Call, seqid_));
+        insert_args args = new insert_args();
+        args.Entry = entry;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public CalculonDb.Result recv_insert()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        insert_result result = new insert_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "insert failed: unknown result");
+      }
+
+      public CalculonDb.Result get(string reportName)
+      {
+        send_get(reportName);
+        return recv_get();
+      }
+
+      public void send_get(string reportName)
+      {
+        oprot_.WriteMessageBegin(new TMessage("get", TMessageType.Call, seqid_));
+        get_args args = new get_args();
+        args.ReportName = reportName;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public CalculonDb.Result recv_get()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        get_result result = new get_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "get failed: unknown result");
+      }
+
+      public CalculonDb.Result getList(string setName)
+      {
+        send_getList(setName);
+        return recv_getList();
+      }
+
+      public void send_getList(string setName)
+      {
+        oprot_.WriteMessageBegin(new TMessage("getList", TMessageType.Call, seqid_));
+        getList_args args = new getList_args();
+        args.SetName = setName;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public CalculonDb.Result recv_getList()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        getList_result result = new getList_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getList failed: unknown result");
+      }
+
     }
     public class Processor : TProcessor {
       public Processor(Iface iface)
       {
         iface_ = iface;
+        processMap_["insert"] = insert_Process;
+        processMap_["get"] = get_Process;
+        processMap_["getList"] = getList_Process;
       }
 
       protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);
@@ -79,6 +184,556 @@ namespace CalculonDb
           return false;
         }
         return true;
+      }
+
+      public void insert_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        insert_args args = new insert_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        insert_result result = new insert_result();
+        result.Success = iface_.insert(args.Entry);
+        oprot.WriteMessageBegin(new TMessage("insert", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void get_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        get_args args = new get_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        get_result result = new get_result();
+        result.Success = iface_.get(args.ReportName);
+        oprot.WriteMessageBegin(new TMessage("get", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void getList_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        getList_args args = new getList_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        getList_result result = new getList_result();
+        result.Success = iface_.getList(args.SetName);
+        oprot.WriteMessageBegin(new TMessage("getList", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+    }
+
+
+    [Serializable]
+    public partial class insert_args : TBase
+    {
+      private CalculonDb.Entry _entry;
+
+      public CalculonDb.Entry Entry
+      {
+        get
+        {
+          return _entry;
+        }
+        set
+        {
+          __isset.entry = true;
+          this._entry = value;
+        }
+      }
+
+
+      public Isset __isset;
+      [Serializable]
+      public struct Isset {
+        public bool entry;
+      }
+
+      public insert_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Entry = new CalculonDb.Entry();
+                Entry.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("insert_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Entry != null && __isset.entry) {
+          field.Name = "entry";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Entry.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("insert_args(");
+        sb.Append("Entry: ");
+        sb.Append(Entry== null ? "<null>" : Entry.ToString());
+        sb.Append(")");
+        return sb.ToString();
+      }
+
+    }
+
+
+    [Serializable]
+    public partial class insert_result : TBase
+    {
+      private CalculonDb.Result _success;
+
+      public CalculonDb.Result Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+
+      public Isset __isset;
+      [Serializable]
+      public struct Isset {
+        public bool success;
+      }
+
+      public insert_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new CalculonDb.Result();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("insert_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("insert_result(");
+        sb.Append("Success: ");
+        sb.Append(Success== null ? "<null>" : Success.ToString());
+        sb.Append(")");
+        return sb.ToString();
+      }
+
+    }
+
+
+    [Serializable]
+    public partial class get_args : TBase
+    {
+      private string _reportName;
+
+      public string ReportName
+      {
+        get
+        {
+          return _reportName;
+        }
+        set
+        {
+          __isset.reportName = true;
+          this._reportName = value;
+        }
+      }
+
+
+      public Isset __isset;
+      [Serializable]
+      public struct Isset {
+        public bool reportName;
+      }
+
+      public get_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                ReportName = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("get_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (ReportName != null && __isset.reportName) {
+          field.Name = "reportName";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ReportName);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("get_args(");
+        sb.Append("ReportName: ");
+        sb.Append(ReportName);
+        sb.Append(")");
+        return sb.ToString();
+      }
+
+    }
+
+
+    [Serializable]
+    public partial class get_result : TBase
+    {
+      private CalculonDb.Result _success;
+
+      public CalculonDb.Result Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+
+      public Isset __isset;
+      [Serializable]
+      public struct Isset {
+        public bool success;
+      }
+
+      public get_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new CalculonDb.Result();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("get_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("get_result(");
+        sb.Append("Success: ");
+        sb.Append(Success== null ? "<null>" : Success.ToString());
+        sb.Append(")");
+        return sb.ToString();
+      }
+
+    }
+
+
+    [Serializable]
+    public partial class getList_args : TBase
+    {
+      private string _setName;
+
+      public string SetName
+      {
+        get
+        {
+          return _setName;
+        }
+        set
+        {
+          __isset.setName = true;
+          this._setName = value;
+        }
+      }
+
+
+      public Isset __isset;
+      [Serializable]
+      public struct Isset {
+        public bool setName;
+      }
+
+      public getList_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SetName = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("getList_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SetName != null && __isset.setName) {
+          field.Name = "setName";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SetName);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("getList_args(");
+        sb.Append("SetName: ");
+        sb.Append(SetName);
+        sb.Append(")");
+        return sb.ToString();
+      }
+
+    }
+
+
+    [Serializable]
+    public partial class getList_result : TBase
+    {
+      private CalculonDb.Result _success;
+
+      public CalculonDb.Result Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+
+      public Isset __isset;
+      [Serializable]
+      public struct Isset {
+        public bool success;
+      }
+
+      public getList_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new CalculonDb.Result();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("getList_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("getList_result(");
+        sb.Append("Success: ");
+        sb.Append(Success== null ? "<null>" : Success.ToString());
+        sb.Append(")");
+        return sb.ToString();
       }
 
     }
