@@ -5,6 +5,7 @@ using Missing.Diagnostics;
 using Missing.ObjectExtensions;
 using CalculonDb;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace testclient
 {
@@ -18,9 +19,10 @@ namespace testclient
 
 			try
 			{
-				int port = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["Interface.Port"]);
+				string host = ConfigurationManager.AppSettings["Interface.Host"];
+				int port = Int32.Parse(ConfigurationManager.AppSettings["Interface.Port"]);
 
-				var socket = new TSocket("localhost", port);
+				var socket = new TSocket(host, port);
 				var transport = new TBufferedTransport(socket);
 				var protocol = new TBinaryProtocol(transport);
 				var client = new InterfaceNodeService.Client(protocol);
