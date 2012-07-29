@@ -7,7 +7,7 @@ You can think of a report as a sort of document containing logic and data.
 
 Inserts are performed by adding entries to a stream in the database. Each entry has a "type". Each report subscribes to specific types. When an entry is added to the stream, the reports subscribing to the entry's type are handed the entry so that they can aggregate themselves.
 
-Be aware that this is *not* a generel purpose database.
+Be aware that this is **not** a generel purpose database.
 
 
 Additional notes
