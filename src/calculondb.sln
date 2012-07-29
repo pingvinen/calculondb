@@ -3,16 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib", "lib\lib.csproj", "{7C79B6B7-044F-45C7-AAF5-A8B119185077}"
 EndProject
+Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "thriftfiles", "thriftfiles\thriftfiles.mdproj", "{BEDAB6E4-03B2-4BE0-B105-92AAB683C65E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Default|Any CPU = Default|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7C79B6B7-044F-45C7-AAF5-A8B119185077}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7C79B6B7-044F-45C7-AAF5-A8B119185077}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C79B6B7-044F-45C7-AAF5-A8B119185077}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C79B6B7-044F-45C7-AAF5-A8B119185077}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEDAB6E4-03B2-4BE0-B105-92AAB683C65E}.Debug|Any CPU.ActiveCfg = Default|Any CPU
+		{BEDAB6E4-03B2-4BE0-B105-92AAB683C65E}.Debug|Any CPU.Build.0 = Default|Any CPU
+		{BEDAB6E4-03B2-4BE0-B105-92AAB683C65E}.Default|Any CPU.ActiveCfg = Default|Any CPU
+		{BEDAB6E4-03B2-4BE0-B105-92AAB683C65E}.Default|Any CPU.Build.0 = Default|Any CPU
+		{BEDAB6E4-03B2-4BE0-B105-92AAB683C65E}.Release|Any CPU.ActiveCfg = Default|Any CPU
+		{BEDAB6E4-03B2-4BE0-B105-92AAB683C65E}.Release|Any CPU.Build.0 = Default|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = lib\lib.csproj
