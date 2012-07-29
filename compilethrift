@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Interface Node: C#"
-thrift -out src/lib/Generated/ -strict --gen csharp src/thriftfiles/interface-node.thrift
+thrift -r -out src/lib/Generated/ -strict --gen csharp src/thriftfiles/interface-node.thrift
 
 echo "Report Node: C#"
-thrift -out src/lib/Generated/ -strict --gen csharp src/thriftfiles/report-node.thrift
+thrift -r -out src/lib/Generated/ -strict --gen csharp src/thriftfiles/report-node.thrift

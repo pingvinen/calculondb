@@ -41,6 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Generated\CalculonDb\InterfaceNodeService.cs" />
+    <Compile Include="Generated\CalculonDb\ReportNodeService.cs" />
+    <Compile Include="Generated\CalculonDb\Entry.cs" />
+    <Compile Include="Generated\CalculonDb\Result.cs" />
+    <Compile Include="Generated\CalculonDb\ThriftReport.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
