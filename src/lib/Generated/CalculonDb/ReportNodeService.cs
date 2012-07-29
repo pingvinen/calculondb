@@ -17,7 +17,7 @@ namespace CalculonDb
 {
   public class ReportNodeService {
     public interface Iface {
-      void aggregate(CalculonDb.Entry entry);
+      void Aggregate(CalculonDb.Entry entry);
     }
 
     public class Client : Iface {
@@ -45,23 +45,23 @@ namespace CalculonDb
       }
 
 
-      public void aggregate(CalculonDb.Entry entry)
+      public void Aggregate(CalculonDb.Entry entry)
       {
-        send_aggregate(entry);
-        recv_aggregate();
+        send_Aggregate(entry);
+        recv_Aggregate();
       }
 
-      public void send_aggregate(CalculonDb.Entry entry)
+      public void send_Aggregate(CalculonDb.Entry entry)
       {
-        oprot_.WriteMessageBegin(new TMessage("aggregate", TMessageType.Call, seqid_));
-        aggregate_args args = new aggregate_args();
+        oprot_.WriteMessageBegin(new TMessage("Aggregate", TMessageType.Call, seqid_));
+        Aggregate_args args = new Aggregate_args();
         args.Entry = entry;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public void recv_aggregate()
+      public void recv_Aggregate()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -69,7 +69,7 @@ namespace CalculonDb
           iprot_.ReadMessageEnd();
           throw x;
         }
-        aggregate_result result = new aggregate_result();
+        Aggregate_result result = new Aggregate_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         return;
@@ -80,7 +80,7 @@ namespace CalculonDb
       public Processor(Iface iface)
       {
         iface_ = iface;
-        processMap_["aggregate"] = aggregate_Process;
+        processMap_["Aggregate"] = Aggregate_Process;
       }
 
       protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);
@@ -113,14 +113,14 @@ namespace CalculonDb
         return true;
       }
 
-      public void aggregate_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void Aggregate_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        aggregate_args args = new aggregate_args();
+        Aggregate_args args = new Aggregate_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        aggregate_result result = new aggregate_result();
-        iface_.aggregate(args.Entry);
-        oprot.WriteMessageBegin(new TMessage("aggregate", TMessageType.Reply, seqid)); 
+        Aggregate_result result = new Aggregate_result();
+        iface_.Aggregate(args.Entry);
+        oprot.WriteMessageBegin(new TMessage("Aggregate", TMessageType.Reply, seqid)); 
         result.Write(oprot);
         oprot.WriteMessageEnd();
         oprot.Transport.Flush();
@@ -130,7 +130,7 @@ namespace CalculonDb
 
 
     [Serializable]
-    public partial class aggregate_args : TBase
+    public partial class Aggregate_args : TBase
     {
       private CalculonDb.Entry _entry;
 
@@ -154,7 +154,7 @@ namespace CalculonDb
         public bool entry;
       }
 
-      public aggregate_args() {
+      public Aggregate_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -187,7 +187,7 @@ namespace CalculonDb
       }
 
       public void Write(TProtocol oprot) {
-        TStruct struc = new TStruct("aggregate_args");
+        TStruct struc = new TStruct("Aggregate_args");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
         if (Entry != null && __isset.entry) {
@@ -203,7 +203,7 @@ namespace CalculonDb
       }
 
       public override string ToString() {
-        StringBuilder sb = new StringBuilder("aggregate_args(");
+        StringBuilder sb = new StringBuilder("Aggregate_args(");
         sb.Append("Entry: ");
         sb.Append(Entry== null ? "<null>" : Entry.ToString());
         sb.Append(")");
@@ -214,10 +214,10 @@ namespace CalculonDb
 
 
     [Serializable]
-    public partial class aggregate_result : TBase
+    public partial class Aggregate_result : TBase
     {
 
-      public aggregate_result() {
+      public Aggregate_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -242,7 +242,7 @@ namespace CalculonDb
       }
 
       public void Write(TProtocol oprot) {
-        TStruct struc = new TStruct("aggregate_result");
+        TStruct struc = new TStruct("Aggregate_result");
         oprot.WriteStructBegin(struc);
 
         oprot.WriteFieldStop();
@@ -250,7 +250,7 @@ namespace CalculonDb
       }
 
       public override string ToString() {
-        StringBuilder sb = new StringBuilder("aggregate_result(");
+        StringBuilder sb = new StringBuilder("Aggregate_result(");
         sb.Append(")");
         return sb.ToString();
       }

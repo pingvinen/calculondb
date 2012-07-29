@@ -14,5 +14,5 @@ service ReportNodeService {
 	 * Tell the report node to aggregate
 	 * reports with the given Entry
 	 */
-	void aggregate(1: shared.Entry entry)
+	void Aggregate(1: shared.Entry entry)
 }

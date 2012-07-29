@@ -81,8 +81,8 @@ namespace testclient
 								tmpEntry.Data.Add(tmpVarName, tmpVarValue);
 							}
 
-							Log.Trace("Sending insert");
-							res = client.insert(tmpEntry);
+							Log.Trace("Sending Insert");
+							res = client.Insert(tmpEntry);
 							Log.Debug(res.DumpToString());
 
 							tmpEntry = null;
@@ -96,8 +96,8 @@ namespace testclient
 						{
 							input = Prompt("Enter the name of the report you wish to get");
 
-							Log.Trace("Sending getReport");
-							res = client.getReport(input);
+							Log.Trace("Sending GetReport");
+							res = client.GetReport(input);
 							Log.Debug(res.DumpToString());
 
 							break;
@@ -109,8 +109,8 @@ namespace testclient
 						{
 							input = Prompt("Enter the name of the set you wish to get");
 
-							Log.Trace("Sending getSet");
-							res = client.getSet(input);
+							Log.Trace("Sending GetSet");
+							res = client.GetSet(input);
 							Log.Debug(res.DumpToString());
 
 							break;

@@ -13,17 +13,17 @@ service InterfaceNodeService {
 	/**
 	 * Insert an entry into the stream
 	 */
-	shared.Result insert(1: shared.Entry entry)
+	shared.Result Insert(1: shared.Entry entry)
 	
 	/**
 	 * Get the state of the report with the
 	 * given report name
 	 */
-	shared.Result getReport(1: string reportName)
+	shared.Result GetReport(1: string reportName)
 	
 	/**
 	 * Get the state of all the reports 
 	 * belonging to the given set
 	 */
-	shared.Result getSet(1: string setName)
+	shared.Result GetSet(1: string setName)
 }

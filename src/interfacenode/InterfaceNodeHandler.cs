@@ -10,7 +10,7 @@ namespace CalculonDb.InterfaceNode
 		{
 		}
 
-		public Result insert(Entry entry)
+		public Result Insert(Entry entry)
 		{
 			Log.Trace();
 			Log.Debug(entry.DumpToString());
@@ -21,7 +21,7 @@ namespace CalculonDb.InterfaceNode
 			};
 		}
 
-		public Result getReport(string reportName)
+		public Result GetReport(string reportName)
 		{
 			Log.Trace();
 			Log.Debug("reportName = '{0}'", reportName);
@@ -32,7 +32,7 @@ namespace CalculonDb.InterfaceNode
 			};
 		}
 
-		public Result getSet(string setName)
+		public Result GetSet(string setName)
 		{
 			Log.Trace();
 			Log.Debug("setName = '{0}'", setName);
